@@ -1,0 +1,8 @@
+---
+description: Apply the Pipeline Gurus design language to every visual surface
+alwaysApply: true
+---
+
+Read `DESIGN.md` before visual work. Use `tokens/tokens.css` for exact values and `assets/pipeline-gurus-logo.jpg` for the supplied logo.
+
+Use Bebas Neue for display and Poppins for body/UI. Use only black, white, and `#F6283F` unless `DESIGN.md` explicitly permits another value. Preserve hard contrast, 40–50% negative space, rectangular geometry, one hero, one logo, and one CTA maximum. Do not invent logo variants, gradients, rounded-card systems, glass effects, or extra accent colors.

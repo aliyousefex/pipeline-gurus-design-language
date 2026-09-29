@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Pipeline Gurus Design Language live specimen">
+  <title>Pipeline Gurus Design Language</title>
+  <link rel="icon" href="../assets/pipeline-gurus-logo.jpg">
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <style>
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--pg-black); color: var(--pg-white); font-family: var(--pg-font-body); }
+    ::selection { background: var(--pg-red); color: var(--pg-white); }
+    a { color: inherit; }
+    a:focus-visible, button:focus-visible { outline: 3px solid var(--pg-red); outline-offset: 4px; }
+    .wrap { width: min(calc(100% - 96px), var(--pg-content)); margin-inline: auto; }
+    .nav { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; min-height: 104px; border-bottom: 1px solid #303030; }
+    .nav img { width: 224px; height: auto; display: block; }
+    .nav a { font-size: 12px; font-weight: 600; letter-spacing: .12em; text-decoration: none; text-transform: uppercase; }
+    .hero { position: relative; min-height: calc(100svh - 104px); overflow: hidden; display: grid; align-items: center; }
+    .hero::after { content: ""; position: absolute; top: 10%; right: -10%; width: 52%; height: 82%; border: 1px solid #303030; transform: skewX(-18deg); }
+    .hero-copy { position: relative; z-index: 1; max-width: 960px; padding-block: 96px; }
+    .hero h1 { max-width: 900px; margin: 0; font: 400 var(--pg-display-xl)/.82 var(--pg-font-display); letter-spacing: .005em; text-transform: uppercase; text-wrap: balance; }
+    .hero h1 span { color: var(--pg-red); }
+    .hero p { max-width: 620px; margin: 40px 0 0; color: #d0d0d0; font-size: 18px; line-height: 1.65; }
+    .speed-line { position: absolute; right: 0; bottom: 18%; width: 38%; height: 12px; background: var(--pg-red); transform: skewX(-34deg); transform-origin: right; }
+    .section { padding-block: 120px; }
+    .section--light { background: var(--pg-white); color: var(--pg-black); }
+    .section--red { background: var(--pg-red); color: var(--pg-white); }
+    .section-head { display: grid; grid-template-columns: 1.5fr .7fr; gap: 64px; align-items: end; padding-bottom: 48px; border-bottom: 1px solid currentColor; }
+    .section-head h2 { margin: 0; max-width: 760px; font: 400 var(--pg-display)/.9 var(--pg-font-display); text-transform: uppercase; }
+    .section-head p { margin: 0; font-size: 16px; line-height: 1.65; }
+    .palette { display: grid; grid-template-columns: 2fr 1fr 1fr; min-height: 420px; margin-top: 64px; }
+    .swatch { display: flex; flex-direction: column; justify-content: space-between; padding: 32px; border: 1px solid rgba(255,255,255,.16); }
+    .swatch strong { font: 400 44px/1 var(--pg-font-display); text-transform: uppercase; }
+    .swatch code { font: 500 13px/1 var(--pg-font-body); }
+    .swatch--black { background: var(--pg-black); color: var(--pg-white); }
+    .swatch--red { background: var(--pg-red); color: var(--pg-white); }
+    .swatch--white { background: var(--pg-white); color: var(--pg-black); }
+    .type-grid { display: grid; grid-template-columns: 1.4fr .6fr; gap: 80px; margin-top: 72px; }
+    .type-display { margin: 0; font: 400 clamp(64px,10vw,144px)/.84 var(--pg-font-display); text-transform: uppercase; }
+    .type-body { align-self: end; }
+    .type-body p { max-width: 440px; margin: 0 0 24px; font-size: 18px; line-height: 1.65; }
+    .section--red .section-head p, .section--red .type-body p { color: var(--pg-black); }
+    .type-body small { color: var(--pg-black); font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+    .ratio { display: grid; grid-template-columns: 7fr 2fr 1fr; height: 96px; margin-top: 64px; border: 1px solid var(--pg-white); }
+    .ratio span { display: grid; place-items: center; font: 400 28px/1 var(--pg-font-display); }
+    .ratio span:nth-child(1) { background: var(--pg-black); }
+    .ratio span:nth-child(2) { background: var(--pg-white); color: var(--pg-black); }
+    .ratio span:nth-child(3) { background: var(--pg-red); }
+    .frames { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 64px; }
+    .frame { position: relative; aspect-ratio: 1; overflow: hidden; padding: 32px; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid #292929; }
+    .frame img { width: 128px; }
+    .frame h3 { margin: auto 0 18%; max-width: 85%; font: 400 clamp(44px,5vw,74px)/.86 var(--pg-font-display); text-transform: uppercase; }
+    .frame h3 em { color: var(--pg-red); font-style: normal; }
+    .frame .meta { font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+    .frame--white { background: var(--pg-white); color: var(--pg-black); }
+    .frame--red { background: var(--pg-red); color: var(--pg-white); }
+    .frame--red .pg-cta { background: var(--pg-black); color: var(--pg-white); }
+    .frame--red::after { content: ""; position: absolute; right: -22%; bottom: 10%; width: 65%; height: 12px; background: var(--pg-white); transform: rotate(-36deg); }
+    .stat { display: grid; grid-template-columns: 1fr 1fr; min-height: 520px; margin-top: 72px; border-top: 1px solid #d7d7d7; border-bottom: 1px solid #d7d7d7; }
+    .stat-number { display: flex; align-items: center; font: 400 clamp(140px,22vw,320px)/.8 var(--pg-font-display); color: var(--pg-red); }
+    .stat-copy { display: flex; flex-direction: column; justify-content: center; padding-left: 64px; border-left: 1px solid #d7d7d7; }
+    .stat-copy h3 { max-width: 480px; margin: 0; font: 400 clamp(48px,7vw,88px)/.9 var(--pg-font-display); text-transform: uppercase; }
+    .stat-copy p { max-width: 420px; margin: 32px 0 0; color: #333; line-height: 1.65; }
+    footer { padding-block: 80px; }
+    footer .wrap { display: flex; justify-content: space-between; align-items: end; gap: 48px; }
+    footer img { width: 220px; }
+    footer p { max-width: 420px; margin: 0; color: #aaa; font-size: 13px; line-height: 1.6; text-align: right; }
+    @media (max-width: 760px) {
+      .wrap { width: min(calc(100% - 40px), var(--pg-content)); }
+      .nav { min-height: 84px; }
+      .nav img { width: 174px; }
+      .nav a { display: none; }
+      .hero { min-height: calc(100svh - 84px); }
+      .hero-copy { padding-block: 64px; }
+      .hero h1 { font-size: clamp(72px, 24vw, 116px); }
+      .hero p { font-size: 16px; }
+      .hero::after { right: -35%; width: 70%; }
+      .section { padding-block: 80px; }
+      .section-head, .type-grid, .stat { grid-template-columns: 1fr; gap: 32px; }
+      .palette { grid-template-columns: 1fr; min-height: auto; }
+      .swatch { min-height: 200px; }
+      .type-grid { margin-top: 48px; }
+      .ratio { height: 160px; grid-template-columns: 1fr; }
+      .ratio span { font-size: 22px; }
+      .frames { grid-template-columns: 1fr; }
+      .frame { padding: 28px; }
+      .frame h3 { font-size: 64px; }
+      .stat-number { min-height: 300px; }
+      .stat-copy { padding: 48px 0; border-left: 0; border-top: 1px solid #d7d7d7; }
+      footer .wrap { align-items: start; flex-direction: column; }
+      footer p { text-align: left; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  </style>
+</head>
+<body>
+  <header class="wrap nav">
+    <img src="../assets/pipeline-gurus-logo.jpg" alt="Pipeline Gurus">
+    <a href="#system">Explore the system</a>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap hero-copy">
+        <h1>Build a pipeline that <span>moves.</span></h1>
+        <p>A design language engineered for decisive sales ideas: hard contrast, disciplined space, and one action in every frame.</p>
+      </div>
+      <div class="speed-line" aria-hidden="true"></div>
+    </section>
+
+    <section class="section section--light" id="system">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Three colors. One point of impact.</h2>
+          <p>Black establishes authority. White creates clarity. Red appears once, where attention should accelerate.</p>
+        </div>
+        <div class="palette" aria-label="Pipeline Gurus color palette">
+          <div class="swatch swatch--black"><strong>Authority</strong><code>#000000</code></div>
+          <div class="swatch swatch--white"><strong>Clarity</strong><code>#FFFFFF</code></div>
+          <div class="swatch swatch--red"><strong>Action</strong><code>#F6283F</code></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--red">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Headlines lead. Evidence closes.</h2>
+          <p>Bebas Neue carries the decisive thought. Poppins delivers context, proof, labels, and action without competing.</p>
+        </div>
+        <div class="type-grid">
+          <h3 class="type-display">Sharp ideas deserve sharp type.</h3>
+          <div class="type-body">
+            <p>Keep body copy compact, specific, and comfortably readable. One frame needs one message—not a wall of explanation.</p>
+            <small>Poppins / Body and interface</small>
+          </div>
+        </div>
+        <div class="ratio" aria-label="Recommended color proportion">
+          <span>70% Ground</span><span>20% Type</span><span>10% Red</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Every frame has one job.</h2>
+          <p>Cover, explain, or convert. A controlled rhythm across slides makes the carousel feel faster than any one composition.</p>
+        </div>
+        <div class="frames">
+          <article class="frame">
+            <img src="../assets/pipeline-gurus-logo.jpg" alt="">
+            <h3>Your pipeline isn't stuck. Your <em>next step</em> is.</h3>
+            <span class="meta">Carousel cover / Dark and bold</span>
+          </article>
+          <article class="frame frame--white">
+            <span class="meta">Sales tip 01</span>
+            <h3>Lead with the problem buyers already feel.</h3>
+            <span class="meta">Inner slide / Clean and red</span>
+          </article>
+          <article class="frame frame--red">
+            <img src="../assets/pipeline-gurus-logo.jpg" alt="">
+            <h3>Turn attention into action.</h3>
+            <a class="pg-cta" href="#cta">Learn more</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--light">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Numbers become the visual hero.</h2>
+          <p>Use data only when it is real and sourced. This specimen is structural, not a performance claim.</p>
+        </div>
+        <div class="stat">
+          <div class="stat-number">01</div>
+          <div class="stat-copy">
+            <h3>One dominant message per frame.</h3>
+            <p>A headline, number, or image may lead. Supporting elements stay subordinate, aligned, and sparse.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="cta">
+    <div class="wrap">
+      <img src="../assets/pipeline-gurus-logo.jpg" alt="Pipeline Gurus">
+      <p>Pipeline Gurus Design Language v1. Source rules and logo extracted from the supplied social-media guidelines workbook.</p>
+    </div>
+  </footer>
+</body>
+</html>

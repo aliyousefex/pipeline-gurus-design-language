@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "name": "Pipeline Gurus Design Language",
+  "version": "1.0.0",
+  "source": "DESIGN.md",
+  "tokens": ["tokens/tokens.css", "tokens/tokens.json"],
+  "assets": ["assets/pipeline-gurus-logo.jpg"],
+  "surface": "preview/index.html"
+}
